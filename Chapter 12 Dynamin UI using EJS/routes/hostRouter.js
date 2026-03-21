@@ -8,9 +8,7 @@ const hostRouter = express.Router();
 //Local Module
 // const rootDir = require('../utils/pathUtil')
 
-hostRouter.get("/add-home", (req, res, next) => {
-  res.render('addHome',{pageTitle:'Add Home to airbnb'});
-});
+hostRouter.get("/add-home", );
 
 const registeredHomes = [];
 
