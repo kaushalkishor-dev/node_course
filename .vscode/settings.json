@@ -1,5 +1,11 @@
 {
   "accessibility.signals.lineHasError": {
     "sound": "off"
-  }
+  },
+  "mdb.presetConnections": [
+    {
+      "name": "Preset Connection",
+      "connectionString": "mongodb://localhost:27017"
+    }
+  ]
 }
