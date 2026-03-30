@@ -6,7 +6,8 @@ const express = require("express");
 const session = require("express-session");
 const mongodbStore = require("connect-mongodb-session")(session);
 
-const DB_PATH = "mongodb+srv://1234:1234@cluster0.zhhf9pj.mongodb.net/airbnb?appName=Cluster0";
+const DB_PATH =
+  "mongodb+srv://1234:1234@cluster0.zhhf9pj.mongodb.net/airbnb?appName=Cluster0";
 
 // Local Module
 const storeRouter = require("./routes/storeRouter");
@@ -27,23 +28,25 @@ app.set("view engine", "ejs");
 app.set("views", "views");
 
 app.use(express.urlencoded());
-app.use(session({
-  secret: "kaushal is the best",
-  resave: false,
-  saveUninitialized: true,
-  store: store,
-}));  
+app.use(
+  session({
+    secret: "kaushal is the best",
+    resave: false,
+    saveUninitialized: true,
+    store: store,
+  }),
+);
 
 app.use((req, res, next) => {
-  req.isLoggedIn = req.session.isLoggedIn;
+  req.session.isLoggedIn = req.session.isLoggedIn;
   next();
 });
 
 app.use(storeRouter);
-app.use("/host", () =>{
-  if(req.isLoggedIn){
+app.use("/host", () => {
+  if (req.session.isLoggedIn) {
     hostRouter(req, res, next);
-  }else{
+  } else {
     res.redirect("/login");
   }
 });

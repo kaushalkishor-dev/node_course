@@ -7,7 +7,7 @@ exports.getHomes = (req, res, next) => {
     res.render("store/home-list", {
       registeredHomes: registeredHomes,
       pageTitle: "Home-List",
-      isLoggedIn: req.isLoggedIn,
+      isLoggedIn: req.session.isLoggedIn,
     });
   });
 };
@@ -17,7 +17,7 @@ exports.getIndex = (req, res, next) => {
     res.render("store/index", {
       registeredHomes: registeredHomes,
       pageTitle: "airbnb Home",
-      isLoggedIn: req.isLoggedIn,
+      isLoggedIn: req.session.isLoggedIn,
     });
   });
 };
@@ -25,42 +25,44 @@ exports.getIndex = (req, res, next) => {
 exports.getBookings = (req, res, next) => {
   res.render("store/bookings", {
     pageTitle: "My Bookings",
-    isLoggedIn: req.isLoggedIn,
+    isLoggedIn: req.session.isLoggedIn,
   });
 };
 
 exports.getFavouritesList = (req, res, next) => {
   Favourite.find()
-  .populate('houseId')
-  .then((favourites) => {
-    const favouriteHomes = favourites.map((fav) => fav.houseId);
-    res.render("store/favourite-list", {
-      favouriteHomes: favouriteHomes,
-      pageTitle: "My Favourites",
-      isLoggedIn: req.isLoggedIn,
+    .populate("houseId")
+    .then((favourites) => {
+      const favouriteHomes = favourites.map((fav) => fav.houseId);
+      res.render("store/favourite-list", {
+        favouriteHomes: favouriteHomes,
+        pageTitle: "My Favourites",
+        isLoggedIn: req.session.isLoggedIn,
+      });
     });
-  });
 };
 
 exports.postAddToFavourite = (req, res, next) => {
   const homeId = req.body.id;
-  Favourite.findOne({ houseId: homeId }).then((fav) => {
-    if (fav) {
-      console.log("Already marked as favourite");
-      return res.redirect("/favourites");
-    }else{
-      const favourite = new Favourite({
-        houseId: homeId,
-      });
-      favourite.save().then((result) => {
-        console.log("Added to favourite",result);
-      }); 
-    }
-    res.redirect("/favourites");
-  }).catch((err) => {
-    console.log("Error while adding to favourite: ", err);
-    res.redirect("/favourites");
-  });
+  Favourite.findOne({ houseId: homeId })
+    .then((fav) => {
+      if (fav) {
+        console.log("Already marked as favourite");
+        return res.redirect("/favourites");
+      } else {
+        const favourite = new Favourite({
+          houseId: homeId,
+        });
+        favourite.save().then((result) => {
+          console.log("Added to favourite", result);
+        });
+      }
+      res.redirect("/favourites");
+    })
+    .catch((err) => {
+      console.log("Error while adding to favourite: ", err);
+      res.redirect("/favourites");
+    });
 };
 
 exports.postRemoveFromFavourite = (req, res, next) => {
@@ -87,7 +89,7 @@ exports.getHomeDetails = (req, res, next) => {
       res.render("store/home-detail", {
         home: home,
         pageTitle: "Home Detail",
-        isLoggedIn: req.isLoggedIn,
+        isLoggedIn: req.session.isLoggedIn,
       });
     }
   });
