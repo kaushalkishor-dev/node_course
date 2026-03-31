@@ -48,6 +48,17 @@ It covers everything from:
 
 ---
 
-## ⚙️ Getting Started
+## 🛠️ Tech Stack
 
-### 🔽 Clone Repository
+| Category        | Technologies |
+|----------------|-------------|
+| Backend        | Node.js, Express.js |
+| Database       | MongoDB, SQL |
+| ORM/ODM        | Mongoose |
+| Templating     | EJS |
+| Tools          | NPM, Nodemon |
+| Language       | JavaScript (ES6+) |
+
+---
+
+## ⚙️ Getting Started
